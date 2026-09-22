@@ -1,26 +1,36 @@
 //importing from express modules
 
 const express=require("express");
+//getting the function exported from auth.js
+const { authAdmin, authUser } = require("./middlewares/auth");
+
 
 //creating a instance
-
 const app=express();
 
-//Request handlers
+//global middleware checks for all the requests starts with /admin then if has authorization run to the request called
+app.use("/admin",authAdmin);
 
-app.get("/hello",(req,res)=>{
-    res.send({firstname:"Veda",last:"Vyas"});
+//getData 
+app.get("/admin/getdata",(req,res)=>{
+    console.log("Data is fetching");
+    res.send("Here is the data");
+});
+//deleteData
+app.get("/admin/deletedata",(req,res)=>{
+    
+    res.send("Data is deleted");
+});
+
+//user 
+app.get("/user/login",(req,res)=>{
+    res.send("Login successfull");
+});
+//auth of user needed
+app.get("/user/data",authUser,(req,res)=>{
+    res.send("Here is the user data");
 })
 
-app.post("/hello",(req,res)=>{
-    res.send("Posted successfully");
-})
-// app.use("/hello",(req,res)=>{
-//     res.send("Namasthey");
-// });
-// app.use("/test",(req,res)=>{
-//     res.send("Hello from server");
-// });
 //making the server to listen(live)
 app.listen(3000,()=>
 {
