@@ -10,15 +10,12 @@ const User=require("./models/user");
 
 const app=express();
 
+//use of middleware for conversion of json into js
+app.use(express.json());
+
 //api to push data into db
 app.post("/signup",async (req,res)=>{
-    const user=new User({
-        firstName:"Vedavyas",
-        lastName:"Mamidi",
-        age:19,
-        emailId:"vedavyasmamidi3@gmail.com",
-        password:"Iamvedavyas@1",
-    });
+   const user=new User(req.body);
    try{
      await user.save();
     res.send("Data is pushed into db successfully");
