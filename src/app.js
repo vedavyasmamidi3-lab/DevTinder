@@ -1,38 +1,44 @@
 //importing from express modules
 
 const express=require("express");
-//getting the function exported from auth.js
-const { authAdmin, authUser } = require("./middlewares/auth");
+
+//importing the connectDb fn from db.js
+
+const connectDb=require("./config/db");
+const User=require("./models/user");
 
 
-//creating a instance
 const app=express();
 
-//global middleware checks for all the requests starts with /admin then if has authorization run to the request called
-app.use("/admin",authAdmin);
-
-//getData 
-app.get("/admin/getdata",(req,res)=>{
-    console.log("Data is fetching");
-    res.send("Here is the data");
-});
-//deleteData
-app.get("/admin/deletedata",(req,res)=>{
-    
-    res.send("Data is deleted");
-});
-
-//user 
-app.get("/user/login",(req,res)=>{
-    res.send("Login successfull");
-});
-//auth of user needed
-app.get("/user/data",authUser,(req,res)=>{
-    res.send("Here is the user data");
+//api to push data into db
+app.post("/signup",async (req,res)=>{
+    const user=new User({
+        firstName:"Vedavyas",
+        lastName:"Mamidi",
+        age:19,
+        emailId:"vedavyasmamidi3@gmail.com",
+        password:"Iamvedavyas@1",
+    });
+   try{
+     await user.save();
+    res.send("Data is pushed into db successfully");
+   }
+   catch(err)
+   {
+    res.status(400).send("Data uploading failed");
+   }
 })
-
-//making the server to listen(live)
+//making connection to db
+connectDb()
+.then(()=>{
+console.log("Db connected successfully");
 app.listen(3000,()=>
 {
     console.log("Server is running on port 3000");
 });
+})
+.catch((err)=>{
+    console.log("Db connection failed");
+    console.error(err);
+})
+//making the server to listen(live)
