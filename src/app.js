@@ -20,11 +20,13 @@ app.use(cookieParser());
 const authRouter = require("./routers/authRouter");
 const profileRouter = require("./routers/profileRouter");
 const requestRouter = require("./routers/requestRouter");
+const UserConnectionRouter=require("./routers/UserConnections");
 
 //api calls
 app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", requestRouter);
+app.use("/",UserConnectionRouter);
 //get all users in feed
 // app.get("/feed", authUser, async (req, res) => {
 //   try {
